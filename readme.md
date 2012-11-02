@@ -4,7 +4,7 @@ Many software projects need a list of the USA states for one reason or another.
 
 We've scoured the web for lists of states and abbreviations more than once. It's not hard work, but it is work. So, we've implemented a state listing and lookup API in some programming languages for our and your convenience.
 
-Just grab the file that you need and enjoy.
+Just grab the file that you need and let the good times roll.
 
 ###API Features
 
