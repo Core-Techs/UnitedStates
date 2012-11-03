@@ -15,6 +15,7 @@ Just grab the file that you need and let the good times roll.
 ###Current Implementations
 
 - Javascript (compiled from TypeScript)
+  - sample: http://jsfiddle.net/Q6tkB/23/
 - C#
 - SQL
 
