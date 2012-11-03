@@ -106,12 +106,12 @@
         }
     }
     us.getName = getName;
-    function getNamesAndAbbreviations(typeOrTypes) {
-        return getNames(typeOrTypes).concat(getAbbreviations(typeOrTypes));
+    function getNamesAndAbbreviations() {
+        return getNames.apply(this, arguments).concat(getAbbreviations.apply(this, arguments));
     }
     us.getNamesAndAbbreviations = getNamesAndAbbreviations;
-    function getAbbreviations(typeOrTypes) {
-        var states = getStates(typeOrTypes);
+    function getAbbreviations() {
+        var states = getStates.apply(this, arguments);
         var names = new Array();
         for (var i = 0; i < states.length; i++) {
             names.push(states[i].abbr);
@@ -119,8 +119,8 @@
         return names;
     }
     us.getAbbreviations = getAbbreviations;
-    function getNames(typeOrTypes) {
-        var states = getStates(typeOrTypes);
+    function getNames() {
+        var states = getStates.apply(this, arguments);
         var names = new Array();
         for (var i = 0; i < states.length; i++) {
             names.push(states[i].name);
@@ -128,33 +128,24 @@
         return names;
     }
     us.getNames = getNames;
-    function getStates(typeOrTypes) {
-        if (!typeOrTypes) {
-            return us.states;
-        }
-        if (typeOrTypes instanceof Type) {
-            var type = typeOrTypes;
-            var types = [
-                type
-            ];
-        } else {
-            if (typeOrTypes instanceof Array) {
-                types = typeOrTypes;
-            } else {
-                throw 'typeOrTypes was not a Type or Array';
-            }
-        }
+    function getStates() {
         var results = new Array();
-        for (var ti = 0; ti < types.length; ti++) {
-            type = types[ti];
-            for (var si = 0; si < us.states.length; si++) {
-                var s = us.states[si];
-                if (s.type.name === type.name) {
-                    results.push(s);
+        if (arguments.length > 0) {
+            for (var ai = 0; ai < arguments.length; ai++) {
+                var type = arguments[ai];
+                if (type instanceof Type) {
+                    for (var si = 0; si < us.states.length; si++) {
+                        var s = us.states[si];
+                        if (type.name === s.type.name) {
+                            results.push(s);
+                        }
+                    }
                 }
             }
+            return results;
+        } else {
+            return us.states;
         }
-        return results;
     }
     us.getStates = getStates;
 })(us || (us = {}));

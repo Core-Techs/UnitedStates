@@ -97,17 +97,13 @@
         }
     }
 
-    export function getNamesAndAbbreviations(type: Type): string[];
-    export function getNamesAndAbbreviations(types: Type[]): string[];
-    export function getNamesAndAbbreviations(typeOrTypes): string[] {
-        return getNames(typeOrTypes).concat(getAbbreviations(typeOrTypes));
+    export function getNamesAndAbbreviations(/*types*/): string[] {
+        return getNames.apply(this, arguments).concat(getAbbreviations.apply(this, arguments));
     }
 
-    export function getAbbreviations(type: Type): string[];
-    export function getAbbreviations(types: Type[]): string[];
-    export function getAbbreviations(typeOrTypes): string[] {
+    export function getAbbreviations(/*types*/): string[] {
 
-        var states = getStates(typeOrTypes);
+        var states = getStates.apply(this, arguments); 
         var names = new string[];
         for (var i = 0; i < states.length; i++) {
             names.push(states[i].abbr);
@@ -115,11 +111,9 @@
         return names;
     }
 
-    export function getNames(type: Type): string[];
-    export function getNames(types: Type[]): string[];
-    export function getNames(typeOrTypes): string[] {
+    export function getNames(/*types*/): string[] {
 
-        var states = getStates(typeOrTypes);
+        var states = getStates.apply(this, arguments); 
         var names = new string[];
         for (var i = 0; i < states.length; i++) {
             names.push(states[i].name);
@@ -127,37 +121,27 @@
         return names;
     }
 
-    export function getStates(type: Type): State[];
-    export function getStates(types: Type[]): State[];
-    export function getStates(typeOrTypes) : State[] {
-
-        if(!typeOrTypes)
-            return states;
-
-        if(typeOrTypes instanceof Type) {
-            var type = <Type>typeOrTypes;
-            var types = [type];
-            
-        }
-        else if (typeOrTypes instanceof Array) {
-            types = <Type[]>typeOrTypes;
-        }
-        else {
-            throw 'typeOrTypes was not a Type or Array';
-        }
-
+    export function getStates(/*types*/) : State[] {
+        
         var results = new State[];
-        for (var ti = 0; ti < types.length; ti++) {
-            type = types[ti];
-            for (var si = 0; si < states.length; si++) {
-                var s = states[si];
-                if (s.type.name === type.name) {
-                    results.push(s);
+        
+        if (arguments.length > 0) { 
+            for (var ai = 0; ai < arguments.length; ai++) {
+                var type = <Type>arguments[ai];
+                if (type instanceof Type) {
+                    for (var si = 0; si < states.length; si++) {
+                        var s = states[si];
+                        if (type.name === s.type.name) {
+                            results.push(s);
+                        }
+                    }
                 }
-            }       
-        }        
-                
-        return results;
+            }
+            return results;
+        }
+        else { 
+            return states;
+        }      
     }
 }
 
